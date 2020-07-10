@@ -10,8 +10,11 @@ using UnityEngine.UI;
 using System.Threading.Tasks;
 #endif
 
-public class HololensUnityTCP : MonoBehaviour
+public class USTrackingTcpClient : MonoBehaviour
 {
+
+    // public USTrackingManager TrackingManager;
+    // public USStatusTextManager StatusTextManager;
 
 #if !UNITY_EDITOR
     private bool _useUWP = true;
@@ -34,23 +37,15 @@ public class HololensUnityTCP : MonoBehaviour
     public Text textSuccess;
     public Text textUnknown;
 
-    public void Start()
-    {
-        //Server ip address and port
-        Connect("192.168.1.225", "9051");
-    }
-
-
-
     public void Connect(string host, string port)
     {
         if (_useUWP)
         {
-            ConnectUWP(host, port);
+            ConnectUWP("192.168.1.253", "9051");
         }
         else
         {
-            ConnectUnity(host, port);
+            ConnectUnity("192.168.1.225", "9051");
         }
     }
 
@@ -138,33 +133,37 @@ public class HololensUnityTCP : MonoBehaviour
 
     public void Update()
     {
-        if (lastPacket != null)
+        if(lastPacket != null)
         {
             ReportDataToTrackingManager(lastPacket);
         }
 
-        if (errorStatus != null)
+        if(errorStatus != null)
         {
             Debug.Log(errorStatus);
             textError.text += errorStatus + "\n";
+            // StatusTextManager.SetError(errorStatus);
             errorStatus = null;
         }
         if (warningStatus != null)
         {
             Debug.Log(warningStatus);
             textWarning.text += warningStatus + "\n";
+            // StatusTextManager.SetWarning(warningStatus);
             warningStatus = null;
         }
         if (successStatus != null)
         {
             Debug.Log(successStatus);
             textSuccess.text += successStatus + "\n";
+            // StatusTextManager.SetSuccess(successStatus);
             successStatus = null;
         }
         if (unknownStatus != null)
         {
             Debug.Log(unknownStatus);
             textUnknown.text += unknownStatus + "\n";
+            // StatusTextManager.SetUnknown(unknownStatus);
             unknownStatus = null;
         }
     }
@@ -207,16 +206,12 @@ public class HololensUnityTCP : MonoBehaviour
             Debug.Log("Received a frame but data was null");
             return;
         }
-        else
-        {
 
-        }
-
-        // var parts = data.Split(';');
-        // foreach (var part in parts)
-        // {
-        //     ReportStringToTrackingManager(part);
-        // }
+    //     var parts = data.Split(';');
+    //     foreach(var part in parts)
+    //     {
+    //         // ReportStringToTrackingManager(part);
+    //     }
     }
 
     // private void ReportStringToTrackingManager(string rigidBodyString)
@@ -236,6 +231,8 @@ public class HololensUnityTCP : MonoBehaviour
 
     //     Vector3 position = new Vector3(x, y, z);
     //     Quaternion rotation = new Quaternion(qx, qy, qz, qw);
+
+        // TrackingManager.UpdateRigidBodyData(id, position, rotation);
     // }
 
     public void StopExchange()
