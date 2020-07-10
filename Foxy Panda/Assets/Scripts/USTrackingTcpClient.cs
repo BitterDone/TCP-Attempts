@@ -42,15 +42,15 @@ public class USTrackingTcpClient : MonoBehaviour
         String port = "9051";
         if (_useUWP)
         {
-            // String address = "192.168.1.225"; // Laptop
-            String address = "192.168.1.253"; // Hololens
+            String address = "192.168.1.225"; // Laptop
+            // String address = "192.168.1.253"; // Hololens
             log(String.Format("ConnectUWP()ing to {0}:{1}", address, port));
             ConnectUWP(address, port);
         }
         else
         {
-            String address = "192.168.1.225"; // Laptop
-            // String address = "192.168.1.253"; // Hololens
+            // String address = "192.168.1.225"; // Laptop
+            String address = "192.168.1.253"; // Hololens
             log(String.Format("ConnectUnity()ing to {0}:{1}", address, port));
             ConnectUnity(address, port);
         }
