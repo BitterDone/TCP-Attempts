@@ -58,6 +58,7 @@ public class USTrackingTcpClient : MonoBehaviour
 
     public void log(string msg)
     {
+        warningStatus = msg;
         Debug.Log(msg);
     }
 
@@ -101,10 +102,13 @@ public class USTrackingTcpClient : MonoBehaviour
 #else
         try
         {
+            log("attempting ConnectUnity");
             if (exchangeThread != null) StopExchange();
 
+            log("creating client/stream");
             client = new System.Net.Sockets.TcpClient(host, Int32.Parse(port));
             stream = client.GetStream();
+            log("creating reader/writer");
             reader = new StreamReader(stream);
             writer = new StreamWriter(stream) { AutoFlush = true };
 
@@ -129,6 +133,7 @@ public class USTrackingTcpClient : MonoBehaviour
 
     public void RestartExchange()
     {
+        log("attempting RestartExchange");
 #if UNITY_EDITOR
         if (exchangeThread != null) StopExchange();
         exchangeStopRequested = false;
@@ -139,6 +144,8 @@ public class USTrackingTcpClient : MonoBehaviour
         exchangeStopRequested = false;
         exchangeTask = Task.Run(() => ExchangePackets());
 #endif
+
+        log("RestartExchange completed");
     }
 
     public void Update()
@@ -150,28 +157,28 @@ public class USTrackingTcpClient : MonoBehaviour
 
         if(errorStatus != null)
         {
-            Debug.Log(errorStatus);
+            log(errorStatus);
             textError.text += errorStatus + "\n";
             // StatusTextManager.SetError(errorStatus);
             errorStatus = null;
         }
         if (warningStatus != null)
         {
-            Debug.Log(warningStatus);
+            log(warningStatus);
             textWarning.text += warningStatus + "\n";
             // StatusTextManager.SetWarning(warningStatus);
             warningStatus = null;
         }
         if (successStatus != null)
         {
-            Debug.Log(successStatus);
+            log(successStatus);
             textSuccess.text += successStatus + "\n";
             // StatusTextManager.SetSuccess(successStatus);
             successStatus = null;
         }
         if (unknownStatus != null)
         {
-            Debug.Log(unknownStatus);
+            log(unknownStatus);
             textUnknown.text += unknownStatus + "\n";
             // StatusTextManager.SetUnknown(unknownStatus);
             unknownStatus = null;
@@ -247,6 +254,7 @@ public class USTrackingTcpClient : MonoBehaviour
 
     public void StopExchange()
     {
+        log("StopExchange requested");
         exchangeStopRequested = true;
 
 #if UNITY_EDITOR
@@ -274,6 +282,7 @@ public class USTrackingTcpClient : MonoBehaviour
 #endif
         writer = null;
         reader = null;
+        log("StopExchange completed");
     }
 
     public void OnDestroy()
