@@ -37,19 +37,29 @@ public class USTrackingTcpClient : MonoBehaviour
     public Text textSuccess;
     public Text textUnknown;
 
-    public void Connect(string host, string port)
+    public void Connect()
     {
+        String port = "9051";
         if (_useUWP)
         {
-            ConnectUWP("192.168.1.253", "9051");
+            // String address = "192.168.1.225"; // Laptop
+            String address = "192.168.1.253"; // Hololens
+            log(String.Format("ConnectUWP()ing to {0}:{1}", address, port));
+            ConnectUWP(address, port);
         }
         else
         {
-            ConnectUnity("192.168.1.225", "9051");
+            String address = "192.168.1.225"; // Laptop
+            // String address = "192.168.1.253"; // Hololens
+            log(String.Format("ConnectUnity()ing to {0}:{1}", address, port));
+            ConnectUnity(address, port);
         }
     }
 
-
+    public void log(string msg)
+    {
+        Debug.Log(msg);
+    }
 
 #if UNITY_EDITOR
     private void ConnectUWP(string host, string port)
