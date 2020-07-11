@@ -59,3 +59,10 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+# Dlls and ONNX
+cublas64_100.dll
+cudart64_100.dll
+cudnn64_7.dll
+dnn_model_2_0.onnx
+onnxruntime.dll
+
