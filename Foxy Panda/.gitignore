@@ -12,7 +12,8 @@
 /Assets/MRTK
 /appXrsdk
 /appXrsdkArm
-Microsoft.MixedReality.Toolkit*.*
+Microsoft.MixedReality.Toolkit*.csproj
+/Assets/MixedRealityToolkit*.*
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/[Aa]ssets/**/*.meta
